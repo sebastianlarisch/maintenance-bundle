@@ -1,0 +1,23 @@
+{
+    "name": "sebastianlarisch/maintenance-bundle",
+    "description": "Enable maintenance mode for your symfony app, bypass with allowed IP or Cookie.",
+    "type": "symfony-bundle",
+    "require": {
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/twig-bundle": "^6.4",
+        "twig/twig": "^3.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Larisch\\MaintenanceBundle\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Larisch",
+            "email": "kontakt@webcrab.de"
+        }
+    ]
+}

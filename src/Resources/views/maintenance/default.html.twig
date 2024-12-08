@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="<?php echo $locale; ?>">
+<head>
+    <title>{{ 'Maintenance'|trans }}</title>
+    <style type="text/css">
+        body {
+            background-color: #f1f1f1;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        #main {
+            margin: 50px auto;
+            text-align: center;
+        }
+        .wrapper {
+            margin: 0 auto;
+            height: 100%;
+            color: #666666;
+        }
+        .description {
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div class="wrapper">
+        <div class="text-container">
+            <h1>{{ 'The page is currently down for maintenance'|trans }}</h1>
+            <div class="description">{{ 'Sorry for any inconvenience caused. Please try again shortly.'|trans }}</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
