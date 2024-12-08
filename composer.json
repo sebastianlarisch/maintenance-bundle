@@ -6,7 +6,7 @@
         "php": ">=8.2",
         "symfony/framework-bundle": "^6.3",
         "symfony/twig-bundle": "^6.3",
-        "twig/twig": "^3.16"
+        "twig/twig": "^3.0"
     },
     "autoload": {
         "psr-4": {
