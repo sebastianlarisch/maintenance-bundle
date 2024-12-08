@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Larisch\\MaintenanceBundle\\": "src/"
+            "Larisch\\MaintenanceBundle\\": ""
         }
     },
     "license": "MIT",
