@@ -46,12 +46,16 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         }
 
         if ($request->cookies->get('maintenance_bypass') === $this->bypassToken) {
+            $response = $event->getResponse() ?? new Response();
+            $response->headers->set('Vary', 'Cookie');
             return;
         }
 
         $content = $this->twig->render($this->templatePath);
 
         $response = new Response($content, 503);
+        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
         $event->setResponse($response);
     }
 
