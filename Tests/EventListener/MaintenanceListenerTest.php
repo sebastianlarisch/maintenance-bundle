@@ -19,21 +19,20 @@ class MaintenanceListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->twigMock = $this->createMock(Environment::class);
+        $this->twigMock
+            ->method('render')
+            ->with('maintenance.html.twig')
+            ->willReturn('<html>Maintenance Mode</html>');
     }
 
     public function testOnKernelRequestMaintenanceEnabled(): void
     {
         // Arrange
-        $this->twigMock
-            ->expects($this->once())
-            ->method('render')
-            ->with('maintenance.html.twig')
-            ->willReturn('<html>Maintenance Mode</html>');
-
         $listener = new MaintenanceListener(
             true,
             'test-token',
             'maintenance.html.twig',
+            [],
             $this->twigMock
         );
 
@@ -61,6 +60,7 @@ class MaintenanceListenerTest extends TestCase
             false,
             'test-token',
             'maintenance.html.twig',
+            [],
             $this->twigMock
         );
 
@@ -85,6 +85,7 @@ class MaintenanceListenerTest extends TestCase
             true,
             'test-token',
             'maintenance.html.twig',
+            [],
             $this->twigMock
         );
 
@@ -108,9 +109,10 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            true, // Maintenance is enabled
+            true,
             'test-token',
             'maintenance.html.twig',
+            [],
             $this->twigMock
         );
 
@@ -126,5 +128,57 @@ class MaintenanceListenerTest extends TestCase
 
         // Assert
         $this->assertNull($event->getResponse());
+    }
+
+    public function testOnKernelRequestWithAllowedIp(): void
+    {
+        // Arrange
+        $listener = new MaintenanceListener(
+            true,
+            'test-token',
+            'maintenance.html.twig',
+            ["1.2.3.4"],
+            $this->twigMock
+        );
+
+        $request = new Request([], [], [], [], [], ['REQUEST_URI' => '/admin', 'REMOTE_ADDR' => '1.2.3.4']);
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        // Act
+        $listener->onKernelRequest($event);
+
+        // Assert
+        $this->assertNull($event->getResponse());
+    }
+
+    public function testOnKernelRequestWithNotAllowedIp(): void
+    {
+        // Arrange
+        $listener = new MaintenanceListener(
+            true,
+            '',
+            'maintenance.html.twig',
+            ["1.2.3.4"],
+            $this->twigMock
+        );
+
+        $request = new Request([], [], [], [], [], ['REMOTE_ADDR' => '5.4.3.2']);
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        // Act
+        $listener->onKernelRequest($event);
+
+        // Assert
+        $response = $event->getResponse();
+        $this->assertEquals(503, $response->getStatusCode());
+        $this->assertEquals('<html>Maintenance Mode</html>', $response->getContent());
     }
 }

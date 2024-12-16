@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Larisch\MaintenanceBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -38,7 +39,9 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
             return;
         }
 
-        if (in_array($request->getClientIp(), $this->ipAddresses, true)) {
+        $remoteIP = $this->getRemoteIp($request);
+
+        if (in_array($remoteIP, $this->ipAddresses, true)) {
             return;
         }
 
@@ -50,5 +53,12 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
 
         $response = new Response($content, 503);
         $event->setResponse($response);
+    }
+
+    private function getRemoteIp(Request $request): string
+    {
+        return $request->server->get('HTTP_X_FORWARDED_FOR')
+            ?? $request->server->get('REMOTE_ADDR')
+            ?? '0.0.0.0';
     }
 }

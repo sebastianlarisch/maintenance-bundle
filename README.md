@@ -28,3 +28,7 @@ Clear cache with following command.
 ```
 bin/console cache:clear
 ```
+
+**Bypass with cookie**
+
+Create a cookie with name `maintenance_bypass` and add value of your `bypass_token`
