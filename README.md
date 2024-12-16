@@ -2,6 +2,9 @@
 
 ## Install
 
+This Symfony bundle shows a maintenance page if mode is enabled via environment variable.
+The maintenance page can be bypassed via a configurable cookie or a configurable allowed IP address. This ensures, that the maintenance mode is only visible for the audience.
+
 **Install this bundle via Composer:**
 
 `composer require php-translation/symfony-bundle`
@@ -13,6 +16,7 @@ Then, configure the bundle. An example configuration looks like this:
 maintenance:
   enabled: '%env(bool:MAINTENANCE_ENABLED)%'
   bypass_token: 'bypass'
+  ip_addresses: ["127.0.0.1"]
 ```
 
 **Add bundle to your bundles.php**
