@@ -16,6 +16,7 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         private bool $enabled,
         private string $bypassToken,
         private string $templatePath,
+        private array $ipAddresses,
         private Environment $twig
     ) {
     }
@@ -34,6 +35,10 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (str_starts_with($request->getRequestUri(), '/admin')) {
+            return;
+        }
+
+        if (in_array($request->getClientIp(), $this->ipAddresses, true)) {
             return;
         }
 
