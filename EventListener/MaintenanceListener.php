@@ -17,7 +17,8 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         private bool $enabled,
         private string $bypassToken,
         private string $templatePath,
-        private array $ipAddresses,
+        private string $ipAddresses,
+        private string $excludedPaths,
         private Environment $twig
     ) {
     }
@@ -35,13 +36,18 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if (str_starts_with($request->getRequestUri(), '/admin')) {
-            return;
+        $excludedPaths = array_filter(explode(',', $this->excludedPaths));
+
+        if (!empty($excludedPaths)) {
+            foreach ($excludedPaths as $path) {
+                if (str_starts_with($request->getRequestUri(), $path)) {
+                    return;
+                }
+            }
         }
 
         $remoteIP = $this->getRemoteIp($request);
-
-        if (in_array($remoteIP, $this->ipAddresses, true)) {
+        if (in_array($remoteIP, explode(',', $this->ipAddresses), true)) {
             return;
         }
 

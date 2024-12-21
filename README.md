@@ -16,7 +16,8 @@ Then, configure the bundle. An example configuration looks like this:
 maintenance:
   enabled: '%env(bool:MAINTENANCE_ENABLED)%'
   bypass_token: 'bypass'
-  ip_addresses: ["127.0.0.1"]
+  ip_addresses: "127.0.0.1,1.2.3.4"
+  excluded_paths: '/admin,/uploads'
 ```
 
 **Add bundle to your bundles.php**

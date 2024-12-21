@@ -32,7 +32,8 @@ class MaintenanceListenerTest extends TestCase
             true,
             'test-token',
             'maintenance.html.twig',
-            [],
+            '',
+            '',
             $this->twigMock
         );
 
@@ -60,7 +61,8 @@ class MaintenanceListenerTest extends TestCase
             false,
             'test-token',
             'maintenance.html.twig',
-            [],
+            '',
+            '',
             $this->twigMock
         );
 
@@ -85,38 +87,14 @@ class MaintenanceListenerTest extends TestCase
             true,
             'test-token',
             'maintenance.html.twig',
-            [],
+            '',
+            '',
             $this->twigMock
         );
 
         $request = new Request();
         $request->cookies->add(['maintenance_bypass' => 'test-token']);
 
-        $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
-            $request,
-            HttpKernelInterface::MAIN_REQUEST
-        );
-
-        // Act
-        $listener->onKernelRequest($event);
-
-        // Assert
-        $this->assertNull($event->getResponse());
-    }
-
-    public function testOnKernelRequestForAdminRoute(): void
-    {
-        // Arrange
-        $listener = new MaintenanceListener(
-            true,
-            'test-token',
-            'maintenance.html.twig',
-            [],
-            $this->twigMock
-        );
-
-        $request = new Request([], [], [], [], [], ['REQUEST_URI' => '/admin']);
         $event = new RequestEvent(
             $this->createMock(HttpKernelInterface::class),
             $request,
@@ -137,7 +115,8 @@ class MaintenanceListenerTest extends TestCase
             true,
             'test-token',
             'maintenance.html.twig',
-            ["1.2.3.4"],
+            '1.2.3.4',
+            '',
             $this->twigMock
         );
 
@@ -162,7 +141,8 @@ class MaintenanceListenerTest extends TestCase
             true,
             '',
             'maintenance.html.twig',
-            ["1.2.3.4"],
+            '1.2.3.4',
+            '',
             $this->twigMock
         );
 
@@ -180,5 +160,31 @@ class MaintenanceListenerTest extends TestCase
         $response = $event->getResponse();
         $this->assertEquals(503, $response->getStatusCode());
         $this->assertEquals('<html>Maintenance Mode</html>', $response->getContent());
+    }
+
+    public function testOnKernelRequestWithExcludedPaths(): void
+    {
+        // Arrange
+        $listener = new MaintenanceListener(
+            true,
+            '',
+            'maintenance.html.twig',
+            '1.2.3.4',
+            '/foo,/bar',
+            $this->twigMock
+        );
+
+        $request = new Request([], [], [], [], [], ['REQUEST_URI' => '/foo/baz']);
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        // Act
+        $listener->onKernelRequest($event);
+
+        // Assert
+        $this->assertNull($event->getResponse());
     }
 }
