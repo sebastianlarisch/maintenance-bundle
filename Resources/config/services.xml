@@ -8,6 +8,7 @@
             <argument>%maintenance.bypass_token%</argument>
             <argument>%maintenance.template_path%</argument>
             <argument>%maintenance.ip_addresses%</argument>
+            <argument>%maintenance.excluded_paths%</argument>
             <argument type="service" id="twig">@twig</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
