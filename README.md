@@ -18,6 +18,8 @@ maintenance:
   bypass_token: 'bypass'
   ip_addresses: "127.0.0.1,1.2.3.4"
   excluded_paths: '/admin,/uploads'
+  get_bypass_name: foo
+  get_bypass_value: bar
 ```
 
 **Add bundle to your bundles.php**
@@ -37,3 +39,7 @@ bin/console cache:clear
 **Bypass with cookie**
 
 Create a cookie with name `maintenance_bypass` and add value of your `bypass_token`
+
+**Bypass with GET param**
+
+Provide name and value of GET parameter to your maintenance.yml and add it to your GET request URL.

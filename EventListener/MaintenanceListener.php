@@ -19,6 +19,8 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         private string $templatePath,
         private string $ipAddresses,
         private string $excludedPaths,
+        private string $getBypassName,
+        private string $getBypassValue,
         private Environment $twig
     ) {
     }
@@ -35,6 +37,12 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+
+        if ($request->query->has($this->getBypassName)) {
+            if ($request->query->get($this->getBypassName) === $request->query->get($this->getBypassValue)) {
+               return;
+           }
+        }
 
         $excludedPaths = array_filter(explode(',', $this->excludedPaths));
 
