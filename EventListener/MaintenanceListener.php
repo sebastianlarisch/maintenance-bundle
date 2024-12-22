@@ -39,7 +39,7 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if ($request->query->has($this->getBypassName)) {
-            if ($request->query->get($this->getBypassName) === $request->query->get($this->getBypassValue)) {
+            if ($request->query->get($this->getBypassName) === $this->getBypassValue) {
                return;
            }
         }
