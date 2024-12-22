@@ -30,7 +30,7 @@ class MaintenanceListenerTest extends TestCase
         // Arrange
         $listener = new MaintenanceListener(
             enabled: true,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '',
             excludedPaths: '',
@@ -61,7 +61,7 @@ class MaintenanceListenerTest extends TestCase
         // Arrange
         $listener = new MaintenanceListener(
             enabled: false,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '',
             excludedPaths: '',
@@ -84,12 +84,12 @@ class MaintenanceListenerTest extends TestCase
         $this->assertNull($event->getResponse());
     }
 
-    public function testOnKernelRequestWithBypassToken(): void
+    public function testOnKernelRequestWithcookieBypassToken(): void
     {
         // Arrange
         $listener = new MaintenanceListener(
             enabled: true,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '',
             excludedPaths: '',
@@ -119,7 +119,7 @@ class MaintenanceListenerTest extends TestCase
         // Arrange
         $listener = new MaintenanceListener(
             enabled: true,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '1.2.3.4',
             excludedPaths: '',
@@ -147,7 +147,7 @@ class MaintenanceListenerTest extends TestCase
         // Arrange
         $listener = new MaintenanceListener(
             enabled: true,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '1.2.3.4',
             excludedPaths: '',
@@ -177,7 +177,7 @@ class MaintenanceListenerTest extends TestCase
         // Arrange
         $listener = new MaintenanceListener(
             enabled: true,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '1.2.3.4',
             excludedPaths: '/foo,/bar',
@@ -205,7 +205,7 @@ class MaintenanceListenerTest extends TestCase
         // Arrange
         $listener = new MaintenanceListener(
             enabled: true,
-            bypassToken: 'test-token',
+            cookieBypassToken: 'test-token',
             templatePath: 'maintenance.html.twig',
             ipAddresses: '',
             excludedPaths: '',

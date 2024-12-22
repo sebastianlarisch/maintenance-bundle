@@ -15,7 +15,7 @@ Then, configure the bundle. An example configuration looks like this:
 ```
 maintenance:
   enabled: '%env(bool:MAINTENANCE_ENABLED)%'
-  bypass_token: 'bypass'
+  cookie_bypass_token: 'bypass'
   ip_addresses: "127.0.0.1,1.2.3.4"
   excluded_paths: '/admin,/uploads'
   get_bypass_name: foo
@@ -38,7 +38,7 @@ bin/console cache:clear
 
 **Bypass with cookie**
 
-Create a cookie with name `maintenance_bypass` and add value of your `bypass_token`
+Create a cookie with name `maintenance_bypass` and add value of your `cookie_bypass_token`
 
 **Bypass with GET param**
 
