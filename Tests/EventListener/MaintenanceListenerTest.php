@@ -225,8 +225,6 @@ class MaintenanceListenerTest extends TestCase
         $listener->onKernelRequest($event);
 
         // Assert
-        $response = $event->getResponse();
-        $this->assertEquals(503, $response->getStatusCode());
-        $this->assertEquals('<html>Maintenance Mode</html>', $response->getContent());
+        $this->assertNull($event->getResponse());
     }
 }
