@@ -29,12 +29,14 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            true,
-            'test-token',
-            'maintenance.html.twig',
-            '',
-            '',
-            $this->twigMock
+            enabled: true,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '',
+            excludedPaths: '',
+            getBypassName: '',
+            getBypassValue: '',
+            twig: $this->twigMock,
         );
 
         $request = new Request();
@@ -58,12 +60,14 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            false,
-            'test-token',
-            'maintenance.html.twig',
-            '',
-            '',
-            $this->twigMock
+            enabled: false,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '',
+            excludedPaths: '',
+            getBypassName: '',
+            getBypassValue: '',
+            twig: $this->twigMock,
         );
 
         $request = new Request();
@@ -84,12 +88,14 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            true,
-            'test-token',
-            'maintenance.html.twig',
-            '',
-            '',
-            $this->twigMock
+            enabled: true,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '',
+            excludedPaths: '',
+            getBypassName: '',
+            getBypassValue: '',
+            twig: $this->twigMock,
         );
 
         $request = new Request();
@@ -112,12 +118,14 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            true,
-            'test-token',
-            'maintenance.html.twig',
-            '1.2.3.4',
-            '',
-            $this->twigMock
+            enabled: true,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '1.2.3.4',
+            excludedPaths: '',
+            getBypassName: '',
+            getBypassValue: '',
+            twig: $this->twigMock,
         );
 
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => '/admin', 'REMOTE_ADDR' => '1.2.3.4']);
@@ -138,12 +146,14 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            true,
-            '',
-            'maintenance.html.twig',
-            '1.2.3.4',
-            '',
-            $this->twigMock
+            enabled: true,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '1.2.3.4',
+            excludedPaths: '',
+            getBypassName: '',
+            getBypassValue: '',
+            twig: $this->twigMock,
         );
 
         $request = new Request([], [], [], [], [], ['REMOTE_ADDR' => '5.4.3.2']);
@@ -166,12 +176,14 @@ class MaintenanceListenerTest extends TestCase
     {
         // Arrange
         $listener = new MaintenanceListener(
-            true,
-            '',
-            'maintenance.html.twig',
-            '1.2.3.4',
-            '/foo,/bar',
-            $this->twigMock
+            enabled: true,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '1.2.3.4',
+            excludedPaths: '/foo,/bar',
+            getBypassName: '',
+            getBypassValue: '',
+            twig: $this->twigMock,
         );
 
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => '/foo/baz']);
@@ -186,5 +198,35 @@ class MaintenanceListenerTest extends TestCase
 
         // Assert
         $this->assertNull($event->getResponse());
+    }
+
+    public function testOnKernelRequestWithGetParams(): void
+    {
+        // Arrange
+        $listener = new MaintenanceListener(
+            enabled: true,
+            bypassToken: 'test-token',
+            templatePath: 'maintenance.html.twig',
+            ipAddresses: '',
+            excludedPaths: '',
+            getBypassName: 'foo',
+            getBypassValue: 'bar',
+            twig: $this->twigMock,
+        );
+
+        $request = new Request(['foo' => 'bar']);
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        // Act
+        $listener->onKernelRequest($event);
+
+        // Assert
+        $response = $event->getResponse();
+        $this->assertEquals(503, $response->getStatusCode());
+        $this->assertEquals('<html>Maintenance Mode</html>', $response->getContent());
     }
 }
