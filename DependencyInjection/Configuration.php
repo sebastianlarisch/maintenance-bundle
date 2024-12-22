@@ -18,7 +18,7 @@ final class Configuration implements ConfigurationInterface
             ->booleanNode('enabled')
                 ->defaultFalse()
             ->end()
-            ->scalarNode('bypass_token')
+            ->scalarNode('cookie_bypass_token')
                 ->defaultValue('default_secret_token')
             ->end()
             ->scalarNode("ip_addresses")

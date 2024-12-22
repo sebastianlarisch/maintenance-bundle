@@ -15,7 +15,7 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
 {
     public function __construct(
         private bool $enabled,
-        private string $bypassToken,
+        private string $cookieBypassToken,
         private string $templatePath,
         private string $ipAddresses,
         private string $excludedPaths,
@@ -59,7 +59,7 @@ final readonly class MaintenanceListener implements EventSubscriberInterface
             return;
         }
 
-        if ($request->cookies->get('maintenance_bypass') === $this->bypassToken) {
+        if ($request->cookies->get('maintenance_bypass') === $this->cookieBypassToken) {
             $response = $event->getResponse() ?? new Response();
             $response->headers->set('Vary', 'Cookie');
             return;

@@ -17,7 +17,7 @@ final class MaintenanceExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('maintenance.enabled', $config['enabled']);
-        $container->setParameter('maintenance.bypass_token', $config['bypass_token']);
+        $container->setParameter('maintenance.cookie_bypass_token', $config['bypass_token']);
         $container->setParameter('maintenance.ip_addresses', $config['ip_addresses']);
         $container->setParameter('maintenance.excluded_paths', $config['excluded_paths']);
         $container->setParameter('maintenance.template_path', $config['template_path']);
