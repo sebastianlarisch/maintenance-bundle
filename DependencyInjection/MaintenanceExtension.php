@@ -21,8 +21,8 @@ final class MaintenanceExtension extends Extension
         $container->setParameter('maintenance.ip_addresses', $config['ip_addresses']);
         $container->setParameter('maintenance.excluded_paths', $config['excluded_paths']);
         $container->setParameter('maintenance.template_path', $config['template_path']);
-        $container->setParameter('maintenance.get_bypass_name', $config['template_path']);
-        $container->setParameter('maintenance.get_bypass_value', $config['template_path']);
+        $container->setParameter('maintenance.get_bypass_name', $config['get_bypass_name']);
+        $container->setParameter('maintenance.get_bypass_value', $config['get_bypass_value']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
